@@ -7,22 +7,14 @@
 //
 
 #include <iostream>
+#include "SingleQueue.hpp"
 
 using namespace std;
 
+
 int main(int argc, const char * argv[]) {
-//	Vector<int> vec;
-//	for (int i = 0; i < 50; ++i) {
-//		vec.addItem(i);
-//	}
-//	
-//	vec.print();
-//	
-//	for (int i = 100; i < 200; ++i) {
-//		vec.addItem(i);
-//	}
-//	
-//	vec.print();
-	
+	SingleQueue sim1;
+	sim1.simulate();
+	sim1.printStats();
     return 0;
 }

@@ -60,7 +60,7 @@ void Vector<T>::print(){
 
 template <class T>
 long Vector<T>::getSize(){
-	return this->size;
+	return this->size + 1; //size in vec is 0 based
 }
 
 template <class T>

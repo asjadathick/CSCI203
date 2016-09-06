@@ -64,11 +64,20 @@ void MinHeap::siftUp(long index){
 
 void MinHeap::insert(float value){
 	array.addItem(value);
-	siftUp(array.getSize());
+	siftUp(array.getSize()-1);
 }
 
 float MinHeap::getMinimum(){
+	if (array.getSize() == 0) {
+		return 0;
+	}
 	return array[0];
+}
+
+float MinHeap::popMin(){
+	float ret = getMinimum();
+	removeMinimum();
+	return ret;
 }
 
 void MinHeap::removeMinimum(){

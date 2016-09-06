@@ -24,6 +24,7 @@ public:
 	void insert(float value);
 	float getMinimum();
 	void removeMinimum();
+	float popMin();
 };
 
 #endif /* Heap_hpp */

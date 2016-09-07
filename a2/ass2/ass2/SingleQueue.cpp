@@ -118,6 +118,11 @@ void SingleQueue::simulate(){
 			}
 		}
 	}
+	
+	//average out stats
+	pack.averageServiceTime /= (pack.numOfPeopleServed == 0 ? 1: pack.numOfPeopleServed);
+	pack.averageTimeSpentInQueue /= (pack.queueLengthCount == 0 ? 1 : pack.queueLengthCount);
+	pack.averageLengthOfQueue /= (pack.queueLengthCount == 0 ? 1 : pack.queueLengthCount);
 }
 
 void SingleQueue::printStats(){

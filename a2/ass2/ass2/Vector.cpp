@@ -64,8 +64,23 @@ long Vector<T>::getSize(){
 }
 
 template <class T>
-void Vector<T>::popBack(){
+T Vector<T>::popBack(){
 	size--;
+	return array[size + 1];
+}
+
+template <class T>
+T Vector<T>::popFront() {
+	if (size > -1) {
+		T ret = array[0];
+		size--;
+		for (int i = 0; i < size; ++i) {
+			array[i+1] = array[i];
+		}
+		return ret;
+	} else {
+		return T();
+	}
 }
 
 template <class T>

@@ -32,6 +32,7 @@ struct StatPack{
 	
 	//utils
 	int inQueueCount;
+	int queueLengthCount;
 	//
 	
 	StatPack(){
@@ -44,7 +45,12 @@ struct StatPack{
 		maxLengthOfQueue = 0;
 		
 		inQueueCount = 0;
+		queueLengthCount = 0;
 	}
+};
+
+enum JobType{
+	Arrival, Finish, UnAlloc
 };
 
 void openFile(std::string filename, std::ifstream& file);

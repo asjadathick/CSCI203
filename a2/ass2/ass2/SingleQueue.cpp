@@ -15,56 +15,109 @@ SingleQueue::SingleQueue(){
 }
 
 void SingleQueue::simulate(){
-	long currentCustomer = 0;
+	bool processed = false;
+	long customerIndex = 0;
+	MinHeap eventHeap;
+	JobType nextJob = UnAlloc;
+	int busyServers = 0;
 	double currentTime = 0;
-	int serversBusy = 0;
+	Vector<Customer> queue;
 	
-	MinHeap heap;
-	
-	while (currentCustomer < list.getSize()) {
-		//determine what next event is
-		if (heap.getMinimum() != 0) {
-			//min wont be 0 unless the heap is empty
-			if (heap.getMinimum() <= list[currentCustomer].arrival) {
-				//job finish event
-				currentTime = heap.popMin();
-				//stats
-				pack.numOfPeopleServed++;
-				pack.simEndTime = currentTime;
-				//--
-				serversBusy--;
+	while (!processed) {
+		if (customerIndex < list.getSize()) {
+			//customers exist
+			if (eventHeap.getMinimum() != 0) {
+				if (list[customerIndex].arrival < eventHeap.getMinimum()) {
+					//arrival
+					nextJob = Arrival;
+				} else {
+					//finish
+					nextJob = Finish;
+				}
+			} else {
+				//arrival because cust index is still valid
+				nextJob = Arrival;
+			}
+		} else {
+			if (eventHeap.getMinimum() != 0) {
+				//finish
+				nextJob = Finish;
+			} else {
+				//if it ends before processing queue, add check here
+				//done
+				processed = true;
 			}
 		}
 		
-		currentTime = list[currentCustomer].arrival;
-		//arrival - assign if server available
-		if (serversBusy < numServers) {
-			heap.insert(currentTime + list[currentCustomer].duration);
-			//stats
-			pack.averageServiceTime += list[currentCustomer].duration;
-			
-			float timeSpentInQueue = currentTime - list[currentCustomer].arrival;
-			if (timeSpentInQueue > 0) {
-				pack.averageTimeSpentInQueue += timeSpentInQueue;
-				pack.inQueueCount++;
-				
-				if (pack.maxTimeSpentInQueue < timeSpentInQueue) {
-					pack.maxTimeSpentInQueue = timeSpentInQueue;
+		if (!processed) {
+			if (nextJob == Arrival) {
+				currentTime = list[customerIndex].arrival;
+				if (busyServers < numServers) {
+					eventHeap.insert(currentTime + list[customerIndex].duration);
+					
+					//stats
+					pack.averageServiceTime += list[customerIndex].duration;
+					//sever idle time
+					
+					busyServers++;
+					customerIndex++;
+				} else {
+					//add to queue
+					queue.addItem(list[customerIndex]);
+					
+					//stats
+					pack.averageLengthOfQueue += queue.getSize();
+					pack.queueLengthCount++;
+					
+					if (pack.maxLengthOfQueue < queue.getSize()) {
+						pack.maxLengthOfQueue = queue.getSize();
+					}
+					
+					customerIndex++;
 				}
+				
+			} else if (nextJob == Finish){
+				if (eventHeap.getMinimum() != 0) {
+					currentTime = eventHeap.popMin();
+					
+					//Stats
+					pack.numOfPeopleServed++;
+					pack.simEndTime = currentTime;
+					
+					busyServers--;
+					
+					if (queue.getSize() != 0) {
+						Customer temp = queue.popFront();
+						eventHeap.insert(currentTime + temp.duration);
+						
+						//stats
+						float timeSpentInQueue = currentTime - temp.arrival;
+						pack.averageTimeSpentInQueue += timeSpentInQueue;
+						pack.queueLengthCount++;
+						
+						if (timeSpentInQueue > pack.maxTimeSpentInQueue) {
+							pack.maxTimeSpentInQueue = timeSpentInQueue;
+						}
+						
+						pack.averageServiceTime += temp.duration;
+						//server idle time
+						
+						busyServers++;
+						
+					}
+
+				} else {
+					continue;
+				}
+				
+				
+			} else {
+				//shouldn't get here.
+				cout << "Debug: Something's not right" << endl;
+				processed = true;
 			}
-			
-			//--
-			serversBusy++;
-			currentCustomer++;
-		} else {
-			//put in queue and inc cust num
 		}
 	}
-	
-	//Average result pack
-	pack.averageServiceTime /= pack.numOfPeopleServed;
-	pack.averageTimeSpentInQueue /= pack.inQueueCount;
-	
 }
 
 void SingleQueue::printStats(){

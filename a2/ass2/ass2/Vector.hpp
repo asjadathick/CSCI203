@@ -22,7 +22,8 @@ public:
 	Vector();
 	~Vector();
 	long addItem(T item);
-	void popBack();
+	T popBack();
+	T popFront();
 	bool removeItemAt(long index);
 	long getSize();
 	void print();

@@ -15,6 +15,7 @@ using namespace std;
 int main(int argc, const char * argv[]) {
 	SingleQueue sim1;
 	sim1.simulate();
+	cout << "Simulation Type: Single Queue" << endl;
 	sim1.printStats();
     return 0;
 }

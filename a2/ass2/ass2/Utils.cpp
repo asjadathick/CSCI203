@@ -7,6 +7,7 @@
 //
 
 #include "Utils.hpp"
+#include <iomanip>
 
 void openFile(std::string filename, std::ifstream& file){
 	file.open(filename.c_str());
@@ -17,13 +18,13 @@ void openFile(std::string filename, std::ifstream& file){
 
 void printStatPack(StatPack pack){
 	std::cout << "\n---Simulation Results---\n" <<
-	"Number of people served: " << pack.numOfPeopleServed <<
-	"\nTotal simulation time: " << pack.simEndTime <<
-	"\nAverage service time: " << pack.averageServiceTime <<
-	"\nAverage time spent in queue: " << pack.averageTimeSpentInQueue <<
-	"\nMaximum time spent in queue: " << pack.maxTimeSpentInQueue <<
-	"\nAverage length of queue: " << pack.averageLengthOfQueue <<
-	"\nMaximum length of queue: " << pack.maxLengthOfQueue <<
+	std::left << std::setw(29)<< "Number of people served: " << pack.numOfPeopleServed <<
+	std::setw(30)<< "\nTotal simulation time: " << pack.simEndTime <<
+	std::setw(30)<< "\nAverage service time: " << pack.averageServiceTime <<
+	std::setw(30)<< "\nAverage time spent in queue: " << pack.averageTimeSpentInQueue <<
+	std::setw(30)<< "\nMaximum time spent in queue: " << pack.maxTimeSpentInQueue <<
+	std::setw(30)<< "\nAverage length of queue: " << pack.averageLengthOfQueue <<
+	std::setw(30)<< "\nMaximum length of queue: " << pack.maxLengthOfQueue <<
 	"\n\nTotal idle time for servers:\n" << pack.serverIdleTime <<
 	"\n---Simulation complete---\n" << std::endl;
 }

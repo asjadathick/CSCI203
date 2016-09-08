@@ -23,6 +23,8 @@ void SingleQueue::simulate(){
 	double currentTime = 0;
 	Vector<Customer> queue;
 	
+	
+	
 	while (!processed) {
 		if (customerIndex < list.getSize()) {
 			//customers exist
@@ -52,12 +54,16 @@ void SingleQueue::simulate(){
 		if (!processed) {
 			if (nextJob == Arrival) {
 				currentTime = list[customerIndex].arrival;
+				//debug
+				//cout<<currentTime<<endl;
+				//
+				pack.averageServiceTime += list[customerIndex].duration;
 				if (busyServers < numServers) {
 					eventHeap.insert(currentTime + list[customerIndex].duration);
 					
 					//stats
-					pack.averageServiceTime += list[customerIndex].duration;
 					//sever idle time
+					
 					
 					busyServers++;
 					customerIndex++;
@@ -79,7 +85,9 @@ void SingleQueue::simulate(){
 			} else if (nextJob == Finish){
 				if (eventHeap.getMinimum() != 0) {
 					currentTime = eventHeap.popMin();
-					
+					//debug
+					//cout<<currentTime<<endl;
+					//
 					//Stats
 					pack.numOfPeopleServed++;
 					pack.simEndTime = currentTime;
@@ -99,8 +107,8 @@ void SingleQueue::simulate(){
 							pack.maxTimeSpentInQueue = timeSpentInQueue;
 						}
 						
-						pack.averageServiceTime += temp.duration;
 						//server idle time
+
 						
 						busyServers++;
 						
@@ -121,8 +129,13 @@ void SingleQueue::simulate(){
 	
 	//average out stats
 	pack.averageServiceTime /= (pack.numOfPeopleServed == 0 ? 1: pack.numOfPeopleServed);
-	pack.averageTimeSpentInQueue /= (pack.queueLengthCount == 0 ? 1 : pack.queueLengthCount);
+	pack.averageTimeSpentInQueue /= (pack.numOfPeopleServed == 0 ? 1 : pack.numOfPeopleServed);
 	pack.averageLengthOfQueue /= (pack.queueLengthCount == 0 ? 1 : pack.queueLengthCount);
+	ostringstream ss;
+	for (int i = 0; i < numServers; ++i) {
+		ss << "Server " << i+1 << ": " << servers[i].totalIdle << "\n";
+	}
+	pack.serverIdleTime = ss.str();
 }
 
 void SingleQueue::printStats(){
@@ -133,6 +146,10 @@ void SingleQueue::printQueue(){
 	for (int i = 0; i < list.getSize(); ++i) {
 		cout << list[i].arrival << " " << list[i].duration << endl;
 	}
+}
+
+void SingleQueue::getFreeServer(){
+	
 }
 
 void SingleQueue::setup(){
@@ -148,6 +165,11 @@ void SingleQueue::setup(){
 	Customer temp;
 	while ((file >> temp.arrival) && file >> temp.duration) {
 		list.addItem(temp);
+	}
+	
+	Server tem;
+	for (int i = 0; i < 10; ++i) {
+		servers.addItem(tem);
 	}
 	
 }

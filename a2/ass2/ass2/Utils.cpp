@@ -16,7 +16,7 @@ void openFile(std::string filename, std::ifstream& file){
 }
 
 void printStatPack(StatPack pack){
-	std::cout << "---Simulation Results---\n" <<
+	std::cout << "\n---Simulation Results---\n" <<
 	"Number of people served: " << pack.numOfPeopleServed <<
 	"\nTotal simulation time: " << pack.simEndTime <<
 	"\nAverage service time: " << pack.averageServiceTime <<
@@ -24,6 +24,6 @@ void printStatPack(StatPack pack){
 	"\nMaximum time spent in queue: " << pack.maxTimeSpentInQueue <<
 	"\nAverage length of queue: " << pack.averageLengthOfQueue <<
 	"\nMaximum length of queue: " << pack.maxLengthOfQueue <<
-	"\nTotal idle time for servers: " << pack.serverIdleTime <<
-	"\n---Simulation complete---" << std::endl;
+	"\n\nTotal idle time for servers:\n" << pack.serverIdleTime <<
+	"\n---Simulation complete---\n" << std::endl;
 }

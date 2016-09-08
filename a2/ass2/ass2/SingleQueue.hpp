@@ -11,12 +11,15 @@
 
 #include "Heap.hpp"
 #include "Utils.hpp"
+#include <sstream>
 
 class SingleQueue{
 	Vector<Customer> list;
+	Vector<Server> servers;
 	StatPack pack;
 	int numServers;
 	void setup();
+	void getFreeServer();
 	void printQueue(); //test
 public:
 	SingleQueue();

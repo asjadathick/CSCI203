@@ -20,6 +20,7 @@ class Vector{
 	void resizeArray(long);
 public:
 	Vector();
+	Vector(long, T);
 	~Vector();
 	long addItem(T item);
 	T popBack();

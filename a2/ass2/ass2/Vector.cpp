@@ -18,6 +18,17 @@ Vector<T>::Vector(){
 }
 
 template <class T>
+Vector<T>::Vector(long size, T initVal){
+	this->capacity = 2;
+	this->size = -1;
+	array = new T[capacity];
+	
+	for (int i = 0; i < size; ++i) {
+		addItem(initVal);
+	}
+}
+
+template <class T>
 long Vector<T>::addItem(T item){
 	if (size + 1 >= capacity) {
 		resizeArray(capacity * 2);

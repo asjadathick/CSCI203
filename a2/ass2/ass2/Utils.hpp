@@ -18,6 +18,12 @@ struct Customer{
 
 struct Server{
 	float busyTill;
+	float totalIdle;
+	
+	Server(){
+		busyTill = 0;
+		totalIdle = 0;
+	}
 };
 
 struct StatPack{

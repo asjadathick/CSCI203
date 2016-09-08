@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		565741D41D81B3F50018619B /* MultiQueue.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 565741D21D81B3F50018619B /* MultiQueue.cpp */; };
 		56F6D39B1D7ABB7C00687346 /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 56F6D39A1D7ABB7C00687346 /* main.cpp */; };
 		56F6D3A31D7ABB8C00687346 /* Vector.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 56F6D3A11D7ABB8C00687346 /* Vector.cpp */; };
 		56F6D3A61D7BA12F00687346 /* Heap.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 56F6D3A41D7BA12F00687346 /* Heap.cpp */; };
@@ -27,6 +28,8 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		565741D21D81B3F50018619B /* MultiQueue.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = MultiQueue.cpp; sourceTree = "<group>"; };
+		565741D31D81B3F50018619B /* MultiQueue.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = MultiQueue.hpp; sourceTree = "<group>"; };
 		56F6D3971D7ABB7C00687346 /* ass2 */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = ass2; sourceTree = BUILT_PRODUCTS_DIR; };
 		56F6D39A1D7ABB7C00687346 /* main.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = main.cpp; sourceTree = "<group>"; };
 		56F6D3A11D7ABB8C00687346 /* Vector.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Vector.cpp; sourceTree = "<group>"; };
@@ -76,6 +79,8 @@
 				56F6D3A51D7BA12F00687346 /* Heap.hpp */,
 				56F6D3A71D7E47EA00687346 /* SingleQueue.cpp */,
 				56F6D3A81D7E47EA00687346 /* SingleQueue.hpp */,
+				565741D21D81B3F50018619B /* MultiQueue.cpp */,
+				565741D31D81B3F50018619B /* MultiQueue.hpp */,
 				56F6D3AA1D7E482400687346 /* Utils.cpp */,
 				56F6D3AB1D7E482400687346 /* Utils.hpp */,
 			);
@@ -143,6 +148,7 @@
 				56F6D39B1D7ABB7C00687346 /* main.cpp in Sources */,
 				56F6D3AC1D7E482400687346 /* Utils.cpp in Sources */,
 				56F6D3A91D7E47EA00687346 /* SingleQueue.cpp in Sources */,
+				565741D41D81B3F50018619B /* MultiQueue.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -263,6 +269,7 @@
 				56F6D3A01D7ABB7C00687346 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};

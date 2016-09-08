@@ -8,14 +8,20 @@
 
 #include <iostream>
 #include "SingleQueue.hpp"
+#include "MultiQueue.hpp"
 
 using namespace std;
 
 
 int main(int argc, const char * argv[]) {
-	SingleQueue sim1;
-	sim1.simulate();
-	cout << "Simulation Type: Single Queue" << endl;
-	sim1.printStats();
+//	SingleQueue sim1;
+//	sim1.simulate();
+//	cout << "Simulation Type: Single Queue" << endl;
+//	sim1.printStats();
+	
+	MultiQueue simMult;
+	simMult.simulate();
+	cout << "Simulation Type: Multi Queue" << endl;
+	simMult.printStats();
     return 0;
 }

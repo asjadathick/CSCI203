@@ -28,3 +28,5 @@ void printStatPack(StatPack pack){
 	"\n\nTotal idle time for servers:\n" << pack.serverIdleTime <<
 	"\n---Simulation complete---\n" << std::endl;
 }
+
+

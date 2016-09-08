@@ -1,28 +1,27 @@
 //
-//  SingleQueue.cpp
+//  MultiQueue.cpp
 //  ass2
 //
-//  Created by Asjad Athick on 6/09/2016.
+//  Created by Asjad Athick on 9/09/2016.
 //  Copyright © 2016 Asjad Athick. All rights reserved.
 //
 
-#include "SingleQueue.hpp"
+#include "MultiQueue.hpp"
 using namespace std;
 
-SingleQueue::SingleQueue(){
+MultiQueue::MultiQueue(){
 	currentTime = 0;
 	numServers = 0;
 	setup();
 }
 
-void SingleQueue::simulate(){
+void MultiQueue::simulate(){
 	bool processed = false;
 	long customerIndex = 0;
 	MinHeap eventHeap;
 	JobType nextJob = UnAlloc;
 	int busyServers = 0;
 	Vector<Customer> queue;
-	
 	
 	
 	while (!processed) {
@@ -118,7 +117,7 @@ void SingleQueue::simulate(){
 						busyServers++;
 						
 					}
-
+					
 				} else {
 					continue;
 				}
@@ -143,17 +142,17 @@ void SingleQueue::simulate(){
 	pack.serverIdleTime = ss.str();
 }
 
-void SingleQueue::printStats(){
+void MultiQueue::printStats(){
 	printStatPack(pack);
 }
 
-void SingleQueue::printQueue(){
+void MultiQueue::printQueue(){
 	for (int i = 0; i < list.getSize(); ++i) {
 		cout << list[i].arrival << " " << list[i].duration << endl;
 	}
 }
 
-int SingleQueue::getFreeServer(){
+int MultiQueue::getFreeServer(){
 	for (int i = 0; i < numServers; ++i) {
 		if (servers[i].busyTill < currentTime) {
 			return i;
@@ -162,7 +161,7 @@ int SingleQueue::getFreeServer(){
 	return -1;
 }
 
-void SingleQueue::setup(){
+void MultiQueue::setup(){
 	string filename;
 	cout << "Enter the text file name: ";
 	cin >> filename;
@@ -183,4 +182,3 @@ void SingleQueue::setup(){
 	}
 	
 }
-

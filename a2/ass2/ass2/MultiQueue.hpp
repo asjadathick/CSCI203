@@ -1,19 +1,19 @@
 //
-//  SingleQueue.hpp
+//  MultiQueue.hpp
 //  ass2
 //
-//  Created by Asjad Athick on 6/09/2016.
+//  Created by Asjad Athick on 9/09/2016.
 //  Copyright © 2016 Asjad Athick. All rights reserved.
 //
 
-#ifndef SingleQueue_hpp
-#define SingleQueue_hpp
+#ifndef MultiQueue_hpp
+#define MultiQueue_hpp
 
 #include "Heap.hpp"
 #include "Utils.hpp"
 #include <sstream>
 
-class SingleQueue{
+class MultiQueue{
 	Vector<Customer> list;
 	Vector<Server> servers;
 	StatPack pack;
@@ -23,9 +23,9 @@ class SingleQueue{
 	void printQueue(); //test
 	double currentTime;
 public:
-	SingleQueue();
+	MultiQueue();
 	void simulate();
 	void printStats();
 };
 
-#endif /* SingleQueue_hpp */
+#endif /* MultiQueue_hpp */

@@ -20,7 +20,6 @@ void SingleQueue::simulate(){
 	MinHeap eventHeap;
 	JobType nextJob = UnAlloc;
 	int busyServers = 0;
-	double currentTime = 0;
 	Vector<Customer> queue;
 	
 	
@@ -63,6 +62,9 @@ void SingleQueue::simulate(){
 					
 					//stats
 					//sever idle time
+					int serverIndex = getFreeServer();
+					servers[serverIndex].totalIdle += (currentTime - servers[serverIndex].busyTill);
+					servers[serverIndex].busyTill = (currentTime + list[customerIndex].duration);
 					
 					
 					busyServers++;
@@ -108,7 +110,9 @@ void SingleQueue::simulate(){
 						}
 						
 						//server idle time
-
+						int serverIndex = getFreeServer();
+						servers[serverIndex].totalIdle += (currentTime - servers[serverIndex].busyTill);
+						servers[serverIndex].busyTill = (currentTime + temp.duration);
 						
 						busyServers++;
 						
@@ -148,8 +152,13 @@ void SingleQueue::printQueue(){
 	}
 }
 
-void SingleQueue::getFreeServer(){
-	
+int SingleQueue::getFreeServer(){
+	for (int i = 0; i < numServers; ++i) {
+		if (servers[i].busyTill < currentTime) {
+			return i;
+		}
+	}
+	return -1;
 }
 
 void SingleQueue::setup(){
@@ -168,7 +177,7 @@ void SingleQueue::setup(){
 	}
 	
 	Server tem;
-	for (int i = 0; i < 10; ++i) {
+	for (int i = 0; i < numServers; ++i) {
 		servers.addItem(tem);
 	}
 	

@@ -19,8 +19,9 @@ class SingleQueue{
 	StatPack pack;
 	int numServers;
 	void setup();
-	void getFreeServer();
+	int getFreeServer();
 	void printQueue(); //test
+	double currentTime = 0;
 public:
 	SingleQueue();
 	void simulate();

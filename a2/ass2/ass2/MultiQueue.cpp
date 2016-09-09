@@ -9,10 +9,35 @@
 #include "MultiQueue.hpp"
 using namespace std;
 
-MultiQueue::MultiQueue(){
+
+MultiQueue::MultiQueue(string f){
 	currentTime = 0;
 	numServers = 0;
+	filename = f;
 	setup();
+	queueArray = new Vector<Customer>[numServers];
+}
+
+long MultiQueue::getShortestQueue(){
+	long minIndex = 0, minVal = queueArray[0].getSize();
+	
+	for (int i = 1; i < numServers; ++i) {
+		if (queueArray[i].getSize() < minVal) {
+			minVal = queueArray[i].getSize();
+			minIndex = i;
+		}
+	}
+	
+	return minIndex;
+}
+
+int MultiQueue::findFinishingServer(float time){
+	for (int i = 0; i < numServers; ++i) {
+		if (servers[i].busyTill == time) {
+			return i;
+		}
+	}
+	return -1; //shouldn't ideally happen when called in proper context
 }
 
 void MultiQueue::simulate(){
@@ -21,8 +46,9 @@ void MultiQueue::simulate(){
 	MinHeap eventHeap;
 	JobType nextJob = UnAlloc;
 	int busyServers = 0;
-	Vector<Customer> queue;
-	
+	Vector<float> averageServerQueueLengths(numServers,0);
+	Vector<float> queueLengthCounts(numServers, 0);
+	Vector<float> maxQueueLengths(numServers, 0);
 	
 	while (!processed) {
 		if (customerIndex < list.getSize()) {
@@ -70,16 +96,22 @@ void MultiQueue::simulate(){
 					busyServers++;
 					customerIndex++;
 				} else {
-					//add to queue
-					queue.addItem(list[customerIndex]);
+					
+					//get shortest queue
+					
+					long queueIndex = getShortestQueue();
+					
+					queueArray[queueIndex].addItem(list[customerIndex]);
 					
 					//stats
-					pack.averageLengthOfQueue += queue.getSize();
-					pack.queueLengthCount++;
+					averageServerQueueLengths[queueIndex] += queueArray[queueIndex].getSize();
 					
-					if (pack.maxLengthOfQueue < queue.getSize()) {
-						pack.maxLengthOfQueue = queue.getSize();
+					queueLengthCounts[queueIndex]++;
+					
+					if (maxQueueLengths[queueIndex] < queueArray[queueIndex].getSize()) {
+						maxQueueLengths[queueIndex] = queueArray[queueIndex].getSize();
 					}
+					
 					
 					customerIndex++;
 				}
@@ -96,8 +128,12 @@ void MultiQueue::simulate(){
 					
 					busyServers--;
 					
-					if (queue.getSize() != 0) {
-						Customer temp = queue.popFront();
+					//find the server that finished
+					int finishServerIndex = findFinishingServer(currentTime);
+					
+					//check queue for this particular server
+					if (queueArray[finishServerIndex].getSize() != 0) {
+						Customer temp = queueArray[finishServerIndex].popFront();
 						eventHeap.insert(currentTime + temp.duration);
 						
 						//stats
@@ -110,9 +146,8 @@ void MultiQueue::simulate(){
 						}
 						
 						//server idle time
-						int serverIndex = getFreeServer();
-						servers[serverIndex].totalIdle += (currentTime - servers[serverIndex].busyTill);
-						servers[serverIndex].busyTill = (currentTime + temp.duration);
+						servers[finishServerIndex].totalIdle += (currentTime - servers[finishServerIndex].busyTill); //would be 0
+						servers[finishServerIndex].busyTill = (currentTime + temp.duration);
 						
 						busyServers++;
 						
@@ -131,10 +166,26 @@ void MultiQueue::simulate(){
 		}
 	}
 	
+	//add idle time at end of sim
+	for (int i = 0; i < numServers; ++i) {
+		servers[i].totalIdle += (currentTime - servers[i].busyTill);
+	}
+	
 	//average out stats
 	pack.averageServiceTime /= (pack.numOfPeopleServed == 0 ? 1: pack.numOfPeopleServed);
 	pack.averageTimeSpentInQueue /= (pack.numOfPeopleServed == 0 ? 1 : pack.numOfPeopleServed);
-	pack.averageLengthOfQueue /= (pack.queueLengthCount == 0 ? 1 : pack.queueLengthCount);
+	//pack.averageLengthOfQueue /= (pack.queueLengthCount == 0 ? 1 : pack.queueLengthCount);
+	
+	//collect av queue lengths into str
+	ostringstream s1;
+	s1 << endl;
+	for (int i = 0; i < numServers; ++i) {
+		s1 << "Server " << i+1 << ": " << (averageServerQueueLengths[i]/(queueLengthCounts[i]== 0? 1 : queueLengthCounts[i])) << endl;
+		
+	}
+	
+	pack.averageLengthOfQueue = s1.str();
+	
 	ostringstream ss;
 	for (int i = 0; i < numServers; ++i) {
 		ss << "Server " << i+1 << ": " << servers[i].totalIdle << "\n";
@@ -161,10 +212,11 @@ int MultiQueue::getFreeServer(){
 	return -1;
 }
 
+MultiQueue::~MultiQueue(){
+	delete [] queueArray;
+}
+
 void MultiQueue::setup(){
-	string filename;
-	cout << "Enter the text file name: ";
-	cin >> filename;
 	
 	ifstream file;
 	openFile(filename, file);
@@ -175,6 +227,8 @@ void MultiQueue::setup(){
 	while ((file >> temp.arrival) && file >> temp.duration) {
 		list.addItem(temp);
 	}
+	
+	file.close();
 	
 	Server tem;
 	for (int i = 0; i < numServers; ++i) {

@@ -9,9 +9,10 @@
 #include "SingleQueue.hpp"
 using namespace std;
 
-SingleQueue::SingleQueue(){
+SingleQueue::SingleQueue(string f){
 	currentTime = 0;
 	numServers = 0;
+	filename = f;
 	setup();
 }
 
@@ -23,6 +24,7 @@ void SingleQueue::simulate(){
 	int busyServers = 0;
 	Vector<Customer> queue;
 	
+	float avQueueLenStat = 0;
 	
 	
 	while (!processed) {
@@ -75,7 +77,7 @@ void SingleQueue::simulate(){
 					queue.addItem(list[customerIndex]);
 					
 					//stats
-					pack.averageLengthOfQueue += queue.getSize();
+					avQueueLenStat += queue.getSize();
 					pack.queueLengthCount++;
 					
 					if (pack.maxLengthOfQueue < queue.getSize()) {
@@ -132,10 +134,21 @@ void SingleQueue::simulate(){
 		}
 	}
 	
+	//add idle time at end of sim
+	for (int i = 0; i < numServers; ++i) {
+		servers[i].totalIdle += (currentTime - servers[i].busyTill);
+	}
+	
 	//average out stats
 	pack.averageServiceTime /= (pack.numOfPeopleServed == 0 ? 1: pack.numOfPeopleServed);
 	pack.averageTimeSpentInQueue /= (pack.numOfPeopleServed == 0 ? 1 : pack.numOfPeopleServed);
-	pack.averageLengthOfQueue /= (pack.queueLengthCount == 0 ? 1 : pack.queueLengthCount);
+	ostringstream s1;
+	avQueueLenStat /= (pack.queueLengthCount == 0 ? 1 : pack.queueLengthCount);
+	
+	s1 << avQueueLenStat;
+	
+	pack.averageLengthOfQueue = s1.str();
+	
 	ostringstream ss;
 	for (int i = 0; i < numServers; ++i) {
 		ss << "Server " << i+1 << ": " << servers[i].totalIdle << "\n";
@@ -163,9 +176,6 @@ int SingleQueue::getFreeServer(){
 }
 
 void SingleQueue::setup(){
-	string filename;
-	cout << "Enter the text file name: ";
-	cin >> filename;
 	
 	ifstream file;
 	openFile(filename, file);
@@ -176,6 +186,8 @@ void SingleQueue::setup(){
 	while ((file >> temp.arrival) && file >> temp.duration) {
 		list.addItem(temp);
 	}
+	
+	file.close();
 	
 	Server tem;
 	for (int i = 0; i < numServers; ++i) {

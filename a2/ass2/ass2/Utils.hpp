@@ -32,7 +32,7 @@ struct StatPack{
 	float averageServiceTime;
 	float averageTimeSpentInQueue;
 	float maxTimeSpentInQueue;
-	float averageLengthOfQueue;
+	std::string averageLengthOfQueue;
 	float maxLengthOfQueue;
 	std::string serverIdleTime; //for each server, CSV
 	
@@ -47,7 +47,6 @@ struct StatPack{
 		averageServiceTime = 0;
 		averageTimeSpentInQueue = 0;
 		maxTimeSpentInQueue = 0;
-		averageLengthOfQueue = 0;
 		maxLengthOfQueue = 0;
 		
 		inQueueCount = 0;

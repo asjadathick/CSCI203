@@ -22,8 +22,9 @@ class SingleQueue{
 	int getFreeServer();
 	void printQueue(); //test
 	double currentTime;
+	std::string filename;
 public:
-	SingleQueue();
+	SingleQueue(std::string);
 	void simulate();
 	void printStats();
 };

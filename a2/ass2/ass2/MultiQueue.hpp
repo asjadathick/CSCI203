@@ -16,14 +16,19 @@
 class MultiQueue{
 	Vector<Customer> list;
 	Vector<Server> servers;
+	Vector<Customer> *queueArray;
 	StatPack pack;
 	int numServers;
 	void setup();
 	int getFreeServer();
 	void printQueue(); //test
 	double currentTime;
+	std::string filename;
+	long getShortestQueue();
+	int findFinishingServer(float);
 public:
-	MultiQueue();
+	MultiQueue(std::string);
+	~MultiQueue();
 	void simulate();
 	void printStats();
 };

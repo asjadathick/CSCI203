@@ -14,14 +14,24 @@ using namespace std;
 
 
 int main(int argc, const char * argv[]) {
-//	SingleQueue sim1;
-//	sim1.simulate();
-//	cout << "Simulation Type: Single Queue" << endl;
-//	sim1.printStats();
+	string filename, file;
+	cout << "Enter the text file name: ";
+	cin >> filename;
 	
-	MultiQueue simMult;
-	simMult.simulate();
-	cout << "Simulation Type: Multi Queue" << endl;
-	simMult.printStats();
-    return 0;
+	try {
+		SingleQueue sim1(filename);
+		sim1.simulate();
+		cout << "\nSimulation Type: Single Queue" << endl;
+		sim1.printStats();
+		
+		MultiQueue simMult(filename);
+		simMult.simulate();
+		cout << "\nSimulation Type: Multi Queue" << endl;
+		simMult.printStats();
+
+	} catch (string ex) {
+		cout << ex << endl;
+	}
+	
+	return 0;
 }

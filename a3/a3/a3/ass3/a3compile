@@ -1,0 +1,4 @@
+#!/bin/bash
+ 
+g++ generateAdjM.cpp -o generateAdjM
+g++ main.cpp Utils.cpp -o MST

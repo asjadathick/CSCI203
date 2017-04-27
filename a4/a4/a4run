@@ -1,0 +1,6 @@
+#!/bin/bash
+printf "\---Australia Roads---/\n\n"
+./TSP Australia_roads.txt Australia_cities.txt
+
+printf "\n\---Australia Flights---/\n\n"
+./TSP Australia_flights.txt Australia_cities.txt
